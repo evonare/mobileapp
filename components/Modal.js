@@ -1,20 +1,16 @@
-import {
-  StyleSheet,
-  Text,
-  Modal,
-  View,
-  Button,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, Modal, View, TouchableOpacity } from "react-native";
 
-const ModalView = ({ isVisible, setVisible }) => {
+const ModalView = ({ isVisible, setVisible, todo }) => {
   return (
     <Modal visible={isVisible} animationType="slide" style={styles.modal}>
       <View style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.title}>Title</Text>
-          <Text style={styles.desc}>This is Description</Text>
-          <Text style={styles.date}>Added on this Date</Text>
+          <Text style={styles.title}>{todo.title}</Text>
+          <Text style={styles.desc}>{todo.desc}</Text>
+          <View style={styles.dateContainer}>
+            <Text style={styles.date}>Added on</Text>
+            <Text style={styles.date}>{todo.date}</Text>
+          </View>
         </View>
         <TouchableOpacity
           style={styles.btnContainer}
@@ -47,14 +43,16 @@ const styles = StyleSheet.create({
   },
   title: { fontWeight: "bold", fontSize: 30, color: "#666" },
   desc: { fontSize: 20, color: "#666" },
-  date: {
+  dateContainer: {
     position: "absolute",
-    fontSize: 15,
-    color: "#666",
     marginTop: 20,
     bottom: 10,
-    right: 20,
+    left: 20,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
+  date: { fontSize: 17, color: "#666" },
   btnContainer: {
     alignItems: "center",
     paddingVertical: 10,

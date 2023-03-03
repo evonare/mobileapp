@@ -6,9 +6,11 @@ import {
   PanResponder,
   TouchableWithoutFeedback,
 } from "react-native";
+import ModalView from "./Modal";
 
-const TodoCard = ({ todo, onSwipeRight, onPress }) => {
+const TodoCard = ({ todo, onSwipeRight }) => {
   const [position, setPosition] = useState(0);
+  const [isVisible, setVisible] = useState(false);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -33,11 +35,12 @@ const TodoCard = ({ todo, onSwipeRight, onPress }) => {
     >
       <TouchableWithoutFeedback
         onLongPress={() => {
-          onPress((isVisible) => !isVisible);
+          setVisible(true);
         }}
       >
         <Text style={styles.text}>{todo.title}</Text>
       </TouchableWithoutFeedback>
+      <ModalView isVisible={isVisible} setVisible={setVisible} todo={todo} />
     </View>
   );
 };

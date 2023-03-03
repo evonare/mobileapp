@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
-import ModalView from "./Modal";
+import { StyleSheet, Text, View, FlatList, Button } from "react-native";
 
 import TodoCard from "./TodoCard";
 
 const TodoContainer = ({ todos, onSwipeRight }) => {
-  const [isVisible, setVisible] = useState(false);
   const [showMsg, setShowMsg] = useState(false);
 
   useEffect(() => {
@@ -17,16 +15,11 @@ const TodoContainer = ({ todos, onSwipeRight }) => {
   }, [todos]);
 
   const renderItem = ({ item }) => (
-    <TodoCard
-      todo={item}
-      onSwipeRight={() => onSwipeRight(item.key)}
-      onPress={setVisible}
-    />
+    <TodoCard todo={item} onSwipeRight={() => onSwipeRight(item.key)} />
   );
 
   return (
     <View style={styles.todoContainer}>
-      <ModalView isVisible={isVisible} setVisible={setVisible} />
       <View style={styles.container}>
         <Text style={styles.note}>Swipe Right to Delete</Text>
         {showMsg && (
