@@ -1,65 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  FlatList,
-  TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 
-export default function App() {
+import AddTodo from "./components/AddTodo";
+import Header from "./components/Header";
+import TodoContainer from "./components/TodoContainer";
+
+const App = () => {
   const [todos, setTodos] = useState([
-    { title: "Buy groceries for the week", key: 0 },
-    { title: "Call the bank to inquire about a loan", key: 1 },
-    { title: "Schedule a dentist appointment", key: 2 },
-    { title: "Respond to emails from clients", key: 3 },
-    { title: "Pick up dry cleaning", key: 4 },
-    { title: "Research and book a vacation for the summer", key: 5 },
-    { title: "Organize paperwork and file documents", key: 6 },
-    { title: "Write a blog post for company website", key: 7 },
-    { title: "Attend a networking event", key: 8 },
-    { title: "Go for a run in the park", key: 9 },
-    { title: "Meet with team to discuss project updates", key: 10 },
-    { title: "Renew gym membership", key: 11 },
-    { title: "Pay bills and update budget spreadsheet", key: 12 },
-    { title: "Plan a surprise birthday party for a friend", key: 13 },
-    { title: "Research and purchase new software for work tasks.", key: 14 },
+    {
+      title: "Learn React Native",
+      desc: "This is my application",
+      key: Math.random().toString(),
+      date: new Date().toString(),
+    },
   ]);
 
-  const handleOnPress = (id) => {
-    setTodos(todos.filter((todo) => todo.key !== id));
+  useEffect(() => {
+    AsyncStorage.getItem("todos").then((storedTodos) => {
+      if (storedTodos) {
+        setTodos(JSON.parse(storedTodos));
+      }
+    });
+  }, []);
+
+  const handleSwipeRight = (id) => {
+    setTodos((prevTodos) => prevTodos.filter((t) => t.key !== id));
   };
 
+  const addTodo = (text, desc) => {
+    setTodos((prevTodos) => {
+      return [
+        {
+          title: text,
+          key: Math.random().toString(),
+          desc: desc,
+          date: new Date().toLocaleString(),
+        },
+        ...prevTodos,
+      ];
+    });
+  };
+
+  useEffect(() => {
+    AsyncStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleOnPress(0)}
-      ></TouchableOpacity>
-      <FlatList
-        data={todos}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.list}
-            onPress={() => handleOnPress(item.key)}
-            onLongPress={() => setId(null)}
-          >
-            <Text style={styles.listItem}>{item.title}</Text>
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item.key}
-        style={styles.listContainer}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <Header />
+        <AddTodo addTodo={addTodo} />
+        <TodoContainer onSwipeRight={handleSwipeRight} todos={todos} />
+      </View>
+    </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "dodgerblue",
-    paddingTop: 32,
-    paddingHorizontal: 20,
+    backgroundColor: "#fff",
     height: "100%",
+    alignItems: "center",
   },
   listContainer: {
     marginTop: 50,
@@ -76,3 +83,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+export default App;
