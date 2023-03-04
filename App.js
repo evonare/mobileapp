@@ -1,39 +1,87 @@
-import { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function App() {
-  const [count, setCount] = useState(0);
+import AddTodo from "./components/AddTodo";
+import Header from "./components/Header";
+import TodoContainer from "./components/TodoContainer";
+
+const App = () => {
+  const [todos, setTodos] = useState([
+    {
+      title: "Learn React Native",
+      desc: "This is my application",
+      key: Math.random().toString(),
+      date: new Date().toString(),
+    },
+  ]);
+
+  useEffect(() => {
+    AsyncStorage.getItem("todos").then((storedTodos) => {
+      if (storedTodos) {
+        setTodos(JSON.parse(storedTodos));
+      }
+    });
+  }, []);
+
+  const handleSwipeRight = (id) => {
+    setTodos((prevTodos) => prevTodos.filter((t) => t.key !== id));
+  };
+
+  const addTodo = (text, desc) => {
+    setTodos((prevTodos) => {
+      return [
+        {
+          title: text,
+          key: Math.random().toString(),
+          desc: desc,
+          date: new Date().toLocaleString(),
+        },
+        ...prevTodos,
+      ];
+    });
+  };
+
+  useEffect(() => {
+    AsyncStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => setCount(count + 1)}
-        onLongPress={() => setCount(0)}
-      >
-        <Text style={styles.text}>{count}</Text>
-      </TouchableOpacity>
-      <StatusBar style="auto" />
-    </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <Header />
+        <AddTodo addTodo={addTodo} />
+        <TodoContainer onSwipeRight={handleSwipeRight} todos={todos} />
+      </View>
+    </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "dodgerblue",
+    backgroundColor: "#fff",
+    height: "100%",
     alignItems: "center",
-    justifyContent: "center",
   },
-  text: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-    borderColor: "white",
-    borderWidth: 1,
-    padding: 20,
-    borderRadius: 10,
+  listContainer: {
+    marginTop: 50,
+    position: "relative",
+  },
+  list: {
+    padding: 10,
+    marginVertical: 5,
     backgroundColor: "white",
+    borderRadius: 10,
+  },
+  listItem: {
     color: "dodgerblue",
+    fontSize: 20,
   },
 });
+
+export default App;
