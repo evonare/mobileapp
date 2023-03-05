@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, Button } from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 
 import TodoCard from "./TodoCard";
 
@@ -19,16 +19,14 @@ const TodoContainer = ({ todos, onSwipeRight }) => {
   );
 
   return (
-    <View style={styles.todoContainer}>
-      <View style={styles.container}>
-        <Text style={styles.note}>Swipe Right to Delete</Text>
-        {showMsg && (
-          <Text style={styles.error}>
-            Your todo list is waiting for some tasks to be added.
-          </Text>
-        )}
-        <FlatList data={todos} renderItem={renderItem} />
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.note}>Swipe Right to Delete</Text>
+      {showMsg && (
+        <Text style={styles.error}>
+          Your todo list is waiting for some tasks to be added.
+        </Text>
+      )}
+      <FlatList data={todos} renderItem={renderItem} />
     </View>
   );
 };

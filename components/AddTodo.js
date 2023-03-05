@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -6,11 +6,18 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  useColorScheme,
 } from "react-native";
 
 const AddTodo = ({ addTodo }) => {
   const [text, setText] = useState("");
   const [desc, setDesc] = useState("");
+  const [theme, setTheme] = useState("");
+  const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    setTheme(colorScheme);
+  }, [colorScheme]);
 
   const handleTitleChange = (val) => {
     setText(val);
@@ -35,44 +42,92 @@ const AddTodo = ({ addTodo }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={
+        theme === "dark"
+          ? styles.darkTheme.container
+          : styles.lightTheme.container
+      }
+    >
       <TextInput
-        style={styles.input}
+        style={
+          theme === "dark" ? styles.darkTheme.input : styles.lightTheme.input
+        }
         placeholder="Todo title..."
         value={text}
         onChangeText={handleTitleChange}
       />
       <TextInput
-        style={styles.input}
+        style={
+          theme === "dark" ? styles.darkTheme.input : styles.lightTheme.input
+        }
         placeholder="Todo description..."
         value={desc}
         onChangeText={handleDescChange}
       />
-      <TouchableOpacity style={styles.btnContainer} onPress={handleSubmit}>
-        <Text style={styles.text}>Add Todo</Text>
+      <TouchableOpacity
+        style={
+          theme === "dark"
+            ? styles.darkTheme.btnContainer
+            : styles.lightTheme.btnContainer
+        }
+        onPress={handleSubmit}
+      >
+        <Text
+          style={
+            theme === "dark" ? styles.darkTheme.text : styles.lightTheme.text
+          }
+        >
+          Add Todo
+        </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { width: "80%", marginTop: 40, gap: 20 },
-  input: {
-    padding: 10,
-    borderBottomColor: "gray",
-    borderBottomWidth: 1,
-    fontSize: 20,
+  lightTheme: {
+    container: { width: "80%", marginTop: 40, gap: 20 },
+    input: {
+      padding: 10,
+      borderBottomColor: "gray",
+      borderBottomWidth: 1,
+      fontSize: 20,
+    },
+    btnContainer: {
+      backgroundColor: "dodgerblue",
+      paddingVertical: 12,
+      borderRadius: 10,
+    },
+    text: {
+      color: "white",
+      fontSize: 20,
+      fontWeight: "bold",
+      textAlign: "center",
+    },
   },
-  btnContainer: {
-    backgroundColor: "dodgerblue",
-    paddingVertical: 12,
-    borderRadius: 10,
-  },
-  text: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
+  darkTheme: {
+    container: { width: "80%", marginTop: 40, gap: 20 },
+    input: {
+      padding: 10,
+      borderBottomColor: "gray",
+      borderBottomWidth: 1,
+      fontSize: 20,
+      color: "dodgerblue",
+      backgroundColor: "white",
+      borderRadius: 10,
+    },
+    btnContainer: {
+      backgroundColor: "dodgerblue",
+      paddingVertical: 12,
+      borderRadius: 10,
+    },
+    text: {
+      color: "white",
+      fontSize: 20,
+      fontWeight: "bold",
+      textAlign: "center",
+    },
   },
 });
 
