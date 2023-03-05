@@ -30,10 +30,6 @@
         "projectId": "f28c6439-ab5a-4bbf-9ebd-71cebe88d86b"
       }
     },
-    "owner": "ranaintizar",
-    "androidStatusBar": {
-      "backgroundColor": "dodgerblue",
-      "translucent": false
-    }
+    "owner": "ranaintizar"
   }
 }

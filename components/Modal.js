@@ -101,7 +101,6 @@ const ModalView = ({ isVisible, setVisible, todo }) => {
 const styles = StyleSheet.create({
   lightTheme: {
     container: {
-      position: "relative",
       flex: 1,
       position: "relative",
       paddingVertical: 50,
@@ -146,7 +145,6 @@ const styles = StyleSheet.create({
   },
   darkTheme: {
     container: {
-      position: "relative",
       flex: 1,
       backgroundColor: "#000",
       position: "relative",

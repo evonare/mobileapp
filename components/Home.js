@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import AddTodo from "./AddTodo";
 import TodoContainer from "./TodoContainer";
+import Header from "./Header";
 
 const Home = () => {
   const [todos, setTodos] = useState([
@@ -66,6 +67,7 @@ const Home = () => {
             : styles.lightTheme.container
         }
       >
+        <Header />
         <AddTodo addTodo={addTodo} />
         <TodoContainer onSwipeRight={handleSwipeRight} todos={todos} />
       </View>
