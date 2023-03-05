@@ -4,6 +4,7 @@ import {
   View,
   Keyboard,
   TouchableWithoutFeedback,
+  useColorScheme,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -19,6 +20,12 @@ const Home = () => {
       date: new Date().toString(),
     },
   ]);
+  const [theme, setTheme] = useState("");
+  const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    setTheme(colorScheme);
+  }, [colorScheme]);
 
   useEffect(() => {
     AsyncStorage.getItem("todos").then((storedTodos) => {
@@ -52,7 +59,13 @@ const Home = () => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
+      <View
+        style={
+          theme === "dark"
+            ? styles.darkTheme.container
+            : styles.lightTheme.container
+        }
+      >
         <AddTodo addTodo={addTodo} />
         <TodoContainer onSwipeRight={handleSwipeRight} todos={todos} />
       </View>
@@ -61,24 +74,19 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    height: "100%",
-    alignItems: "center",
+  lightTheme: {
+    container: {
+      backgroundColor: "#fff",
+      height: "100%",
+      alignItems: "center",
+    },
   },
-  listContainer: {
-    marginTop: 50,
-    position: "relative",
-  },
-  list: {
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: "white",
-    borderRadius: 10,
-  },
-  listItem: {
-    color: "dodgerblue",
-    fontSize: 20,
+  darkTheme: {
+    container: {
+      backgroundColor: "#000",
+      height: "100%",
+      alignItems: "center",
+    },
   },
 });
 

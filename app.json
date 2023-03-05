@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/adaptive-icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/adaptive-icon.png",
       "resizeMode": "contain",
@@ -30,6 +30,10 @@
         "projectId": "f28c6439-ab5a-4bbf-9ebd-71cebe88d86b"
       }
     },
-    "owner": "ranaintizar"
+    "owner": "ranaintizar",
+    "androidStatusBar": {
+      "backgroundColor": "dodgerblue",
+      "translucent": false
+    }
   }
 }

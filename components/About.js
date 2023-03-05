@@ -1,14 +1,35 @@
-import { StyleSheet, Text, View } from "react-native";
-import { Linking } from "react-native";
+import { useState, useEffect } from "react";
+import { StyleSheet, Text, View, Linking, useColorScheme } from "react-native";
 
 const About = () => {
+  const [theme, setTheme] = useState("");
+  const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    setTheme(colorScheme);
+  }, [colorScheme]);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>
+    <View
+      style={
+        theme === "dark"
+          ? styles.darkTheme.container
+          : styles.lightTheme.container
+      }
+    >
+      <Text
+        style={
+          theme === "dark" ? styles.darkTheme.text : styles.lightTheme.text
+        }
+      >
         Welcome to Todo, the ultimate mobile app for keeping track of your tasks
         and to-do lists! Created by{" "}
         <Text
-          style={styles.author}
+          style={
+            theme === "dark"
+              ? styles.darkTheme.author
+              : styles.lightTheme.author
+          }
           onPress={() => Linking.openURL("https://linktr.ee/ranaintizar")}
         >
           @ranaintizar
@@ -27,21 +48,45 @@ const About = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingVertical: 20,
-    paddingHorizontal: 30,
-    justifyContent: "center",
+  lightTheme: {
+    container: {
+      flex: 1,
+      backgroundColor: "#fff",
+      paddingVertical: 20,
+      paddingHorizontal: 30,
+      justifyContent: "center",
+    },
+    text: {
+      color: "dodgerblue",
+      fontSize: 22,
+      textAlign: "justify",
+    },
+    author: {
+      fontWeight: "bold",
+      textDecorationLine: "underline",
+      backgroundColor: "dodgerblue",
+      color: "white",
+    },
   },
-  text: {
-    color: "dodgerblue",
-    fontSize: 25,
-    textAlign: "justify",
-  },
-  author: {
-    fontWeight: "bold",
-    textDecorationLine: "underline",
+  darkTheme: {
+    container: {
+      flex: 1,
+      backgroundColor: "#000",
+      paddingVertical: 20,
+      paddingHorizontal: 30,
+      justifyContent: "center",
+    },
+    text: {
+      color: "dodgerblue",
+      fontSize: 22,
+      textAlign: "justify",
+    },
+    author: {
+      fontWeight: "bold",
+      textDecorationLine: "underline",
+      backgroundColor: "dodgerblue",
+      color: "white",
+    },
   },
 });
 

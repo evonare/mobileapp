@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, Button } from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 
 import TodoCard from "./TodoCard";
 
