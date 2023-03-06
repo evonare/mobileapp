@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   useColorScheme,
+  Keyboard,
 } from "react-native";
 
 const AddTodo = ({ addTodo }) => {
@@ -36,6 +37,7 @@ const AddTodo = ({ addTodo }) => {
       ]);
     } else {
       addTodo(text, desc);
+      Keyboard.dismiss();
     }
     setText("");
     setDesc("");
@@ -87,7 +89,11 @@ const AddTodo = ({ addTodo }) => {
 
 const styles = StyleSheet.create({
   lightTheme: {
-    container: { width: "80%", marginTop: 40, gap: 20 },
+    container: {
+      width: "80%",
+      marginTop: 40,
+      gap: 20,
+    },
     input: {
       padding: 10,
       borderBottomColor: "gray",

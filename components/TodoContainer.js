@@ -26,13 +26,14 @@ const TodoContainer = ({ todos, onSwipeRight }) => {
           Your todo list is waiting for some tasks to be added.
         </Text>
       )}
-      <FlatList data={todos} renderItem={renderItem} />
+      <FlatList data={todos} renderItem={renderItem} style={styles.list} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: "center",
     marginTop: 70,
     gap: 10,

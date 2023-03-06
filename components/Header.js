@@ -1,20 +1,23 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 
-const Header = () => (
+const Header = ({ navigation, headerTitle, btnTitle }) => (
   <View style={styles.container}>
-    <Text style={styles.text}>My Todos</Text>
+    <Text style={styles.text}>{headerTitle}</Text>
+    <Button title={btnTitle} onPress={() => navigation.navigate(btnTitle)} />
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    justifyContent: "center",
-    height: 70,
-    backgroundColor: "dodgerblue",
+    width: "103%",
+    marginLeft: -19,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 10,
   },
   text: {
-    color: "white",
+    color: "#1e90ff",
     fontWeight: "bold",
     paddingTop: 10,
     fontSize: 25,
