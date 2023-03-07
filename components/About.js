@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Linking, useColorScheme } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Linking,
+  useColorScheme,
+  Button,
+} from "react-native";
 
 const About = () => {
   const [theme, setTheme] = useState("");

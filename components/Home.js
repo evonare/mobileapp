@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import AddTodo from "./AddTodo";
 import TodoContainer from "./TodoContainer";
-import Header from "./Header";
+import Msg from "./Msg";
 
 const Home = () => {
   const [todos, setTodos] = useState([
@@ -18,10 +18,12 @@ const Home = () => {
       title: "Learn React Native",
       desc: "This is my application",
       key: Math.random().toString(),
-      date: new Date().toString(),
+      date: new Date().toLocaleString(),
     },
   ]);
   const [theme, setTheme] = useState("");
+  const [msg, setMsg] = useState(null);
+
   const colorScheme = useColorScheme();
 
   useEffect(() => {
@@ -37,7 +39,25 @@ const Home = () => {
   }, []);
 
   const handleSwipeRight = (id) => {
+    const oldTodos = [...todos];
+    let itemTitle = "";
+    todos.forEach((todo) => {
+      if (todo.key === id) {
+        return (itemTitle = todo.title);
+      }
+    });
+
     setTodos((prevTodos) => prevTodos.filter((t) => t.key !== id));
+
+    const handleUndo = () => {
+      setTodos(oldTodos);
+    };
+
+    let msg = "Item" + " " + "{" + itemTitle + "}" + " " + "is Deleted!";
+    setMsg(
+      <Msg delMsg={msg} button={true} btnText="Undo" btnOnPress={handleUndo} />
+    );
+    setTimeout(() => setMsg(null), 5000);
   };
 
   const addTodo = (text, desc) => {
@@ -52,6 +72,10 @@ const Home = () => {
         ...prevTodos,
       ];
     });
+
+    let msg = "Item" + " " + "{" + text + "}" + " " + "is Added!";
+    setMsg(<Msg addMsg={msg} />);
+    setTimeout(() => setMsg(null), 1000);
   };
 
   useEffect(() => {
@@ -67,9 +91,9 @@ const Home = () => {
             : styles.lightTheme.container
         }
       >
-        <Header />
         <AddTodo addTodo={addTodo} />
         <TodoContainer onSwipeRight={handleSwipeRight} todos={todos} />
+        {msg != null && msg}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -78,6 +102,7 @@ const Home = () => {
 const styles = StyleSheet.create({
   lightTheme: {
     container: {
+      position: "relative",
       backgroundColor: "#fff",
       height: "100%",
       alignItems: "center",
@@ -85,6 +110,7 @@ const styles = StyleSheet.create({
   },
   darkTheme: {
     container: {
+      position: "relative",
       backgroundColor: "#000",
       height: "100%",
       alignItems: "center",
