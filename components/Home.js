@@ -18,6 +18,7 @@ const Home = () => {
       title: "Learn React Native",
       desc: "This is my application",
       key: Math.random().toString(),
+      reminderTime: new Date(),
       date: new Date().toLocaleString(),
     },
   ]);
@@ -32,6 +33,7 @@ const Home = () => {
 
   useEffect(() => {
     AsyncStorage.getItem("todos").then((storedTodos) => {
+      new Date().toLocaleString();
       if (storedTodos) {
         setTodos(JSON.parse(storedTodos));
       }
@@ -39,7 +41,7 @@ const Home = () => {
   }, []);
 
   const handleSwipeRight = (id) => {
-    const oldTodos = [...todos];
+    let oldTodos = todos;
     let itemTitle = "";
     todos.forEach((todo) => {
       if (todo.key === id) {
@@ -49,24 +51,28 @@ const Home = () => {
 
     setTodos((prevTodos) => prevTodos.filter((t) => t.key !== id));
 
+    let flag = true;
+
     const handleUndo = () => {
-      setTodos(oldTodos);
+      flag && setTodos(oldTodos);
+      flag = false;
     };
 
     let msg = "Item" + " " + "{" + itemTitle + "}" + " " + "is Deleted!";
     setMsg(
       <Msg delMsg={msg} button={true} btnText="Undo" btnOnPress={handleUndo} />
     );
-    setTimeout(() => setMsg(null), 5000);
+    // setTimeout(() => setMsg(null), 5000);
   };
 
-  const addTodo = (text, desc) => {
+  const addTodo = (text, desc, date) => {
     setTodos((prevTodos) => {
       return [
         {
           title: text,
           key: Math.random().toString(),
           desc: desc,
+          reminderTime: date.toLocaleString(),
           date: new Date().toLocaleString(),
         },
         ...prevTodos,
