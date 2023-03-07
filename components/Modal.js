@@ -10,6 +10,7 @@ import {
 
 const ModalView = ({ isVisible, setVisible, todo }) => {
   const [theme, setTheme] = useState("");
+
   const colorScheme = useColorScheme();
 
   useEffect(() => {
@@ -48,6 +49,22 @@ const ModalView = ({ isVisible, setVisible, todo }) => {
           >
             {todo.desc}
           </Text>
+          <Text
+            style={
+              theme === "dark"
+                ? styles.darkTheme.reminderTime
+                : styles.lightTheme.reminderTime
+            }
+          >
+            Reminder Time : {todo.reminderTime.toLocaleString()}
+          </Text>
+          <View
+            style={
+              theme === "dark"
+                ? styles.darkTheme.divider
+                : styles.lightTheme.divider
+            }
+          ></View>
           <View
             style={
               theme === "dark"
@@ -100,6 +117,14 @@ const ModalView = ({ isVisible, setVisible, todo }) => {
 
 const styles = StyleSheet.create({
   lightTheme: {
+    divider: {
+      position: "absolute",
+      bottom: 40,
+      width: "100%",
+      left: 20,
+      height: 2,
+      backgroundColor: "#3333",
+    },
     container: {
       flex: 1,
       position: "relative",
@@ -118,6 +143,13 @@ const styles = StyleSheet.create({
     },
     title: { fontWeight: "bold", fontSize: 30, color: "#666" },
     desc: { fontSize: 20, color: "#666" },
+    reminderTime: {
+      fontSize: 20,
+      color: "#666",
+      position: "absolute",
+      bottom: 50,
+      paddingHorizontal: 20,
+    },
     dateContainer: {
       position: "absolute",
       marginTop: 20,
@@ -144,6 +176,14 @@ const styles = StyleSheet.create({
     },
   },
   darkTheme: {
+    divider: {
+      position: "absolute",
+      bottom: 40,
+      width: "100%",
+      left: 20,
+      height: 2,
+      backgroundColor: "#fff",
+    },
     container: {
       flex: 1,
       backgroundColor: "#000",
@@ -163,6 +203,13 @@ const styles = StyleSheet.create({
     },
     title: { fontWeight: "bold", fontSize: 30, color: "white" },
     desc: { fontSize: 20, color: "white" },
+    reminderTime: {
+      fontSize: 20,
+      color: "#666",
+      position: "absolute",
+      bottom: 50,
+      paddingHorizontal: 20,
+    },
     dateContainer: {
       position: "absolute",
       marginTop: 20,

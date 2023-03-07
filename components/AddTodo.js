@@ -9,12 +9,40 @@ import {
   useColorScheme,
   Keyboard,
 } from "react-native";
+import DateTimePicker, {
+  DateTimePickerAndroid,
+} from "@react-native-community/datetimepicker";
 
 const AddTodo = ({ addTodo }) => {
   const [text, setText] = useState("");
   const [desc, setDesc] = useState("");
   const [theme, setTheme] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+
   const colorScheme = useColorScheme();
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setDate(currentDate);
+  };
+
+  const showMode = (mode) => {
+    DateTimePickerAndroid.open({
+      value: date,
+      onChange,
+      mode: mode,
+      is24Hour: true,
+    });
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
+
+  const showTimepicker = () => {
+    showMode("time");
+  };
 
   useEffect(() => {
     setTheme(colorScheme);
@@ -36,7 +64,7 @@ const AddTodo = ({ addTodo }) => {
         { title: "Ok" },
       ]);
     } else {
-      addTodo(text, desc);
+      addTodo(text, desc, date);
       Keyboard.dismiss();
     }
     setText("");
@@ -67,6 +95,14 @@ const AddTodo = ({ addTodo }) => {
         value={desc}
         onChangeText={handleDescChange}
       />
+      <View style={styles.dateTimePicker}>
+        <TouchableOpacity style={styles.dateTimeBtn} onPress={showDatepicker}>
+          <Text style={styles.dateTimeText}>Set Date</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.dateTimeBtn} onPress={showTimepicker}>
+          <Text style={styles.dateTimeText}>Set Time</Text>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity
         style={
           theme === "dark"
@@ -83,11 +119,29 @@ const AddTodo = ({ addTodo }) => {
           Add Todo
         </Text>
       </TouchableOpacity>
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          onChange={onChange}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  dateTimePicker: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  dateTimeBtn: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    backgroundColor: "#1e90ff",
+    borderRadius: 7,
+  },
+  dateTimeText: { color: "#fff", fontSize: 20, fontWeight: "bold" },
   lightTheme: {
     container: {
       width: "80%",
